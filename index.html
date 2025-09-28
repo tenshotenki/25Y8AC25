@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title></title>
+  <meta name="color-scheme" content="dark light" />
+  <style>
+    :root{
+      --bg: radial-gradient(circle at 50% 50%, #1e3c72, #2a5298);
+      --glass: rgba(255,255,255,.10);
+      --stroke: rgba(255,255,255,.25);
+      --txt: #ffffff;
+      --shadow: rgba(0,0,0,.35);
+      --blur: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+      color: var(--txt);
+      background: var(--bg) fixed;
+      background-size: 200% 200%;
+      animation: float-bg 18s ease-in-out infinite;
+    }
+    @keyframes float-bg {
+      0%, 100% { background-position: 0% 0%; }
+      50%      { background-position: 100% 100%; }
+    }
+    .wrap {
+      min-height: 100%;
+      display: grid;
+      place-items: center;
+      padding: clamp(16px, 4vw, 48px);
+    }
+    .card {
+      width: min(960px, 96vw);
+      backdrop-filter: blur(var(--blur)) saturate(1.25);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(1.25);
+      background: linear-gradient(180deg, var(--glass), rgba(255,255,255,0.06));
+      border: 1px solid var(--stroke);
+      border-radius: 28px;
+      box-shadow: 0 24px 64px var(--shadow);
+      padding: clamp(18px, 4.6vw, 36px);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+      gap: clamp(12px, 2.2vw, 18px);
+    }
+    button.link {
+      --btn-bg: rgba(255,255,255,0.14);
+      --btn-brd: rgba(255,255,255,0.35);
+      --btn-txt: #fff;
+      position: relative;
+      width: 100%;
+      appearance: none;
+      border: 1px solid var(--btn-brd);
+      background: linear-gradient(180deg, var(--btn-bg), rgba(255,255,255,0.08));
+      color: var(--btn-txt);
+      border-radius: 18px;
+      padding: 14px 16px;
+      font-size: clamp(14px, 2.2vw, 17px);
+      font-weight: 700;
+      letter-spacing: .02em;
+      cursor: pointer;
+      transition: transform .12s ease, box-shadow .12s ease, border-color .2s ease, background .2s ease, filter .2s ease;
+      box-shadow: 0 10px 28px rgba(0,0,0,.22);
+      overflow: hidden;
+      text-align: left;
+    }
+    button.link:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 42px rgba(0,0,0,.32);
+      filter: saturate(1.2);
+    }
+    button.link:active {
+      transform: translateY(0);
+      box-shadow: 0 10px 28px rgba(0,0,0,.26);
+    }
+    .spark {
+      position: absolute;
+      left: -10%;
+      top: 0;
+      width: 120%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--spark, #fff), transparent);
+      opacity: .7;
+      transform: translateY(-6px);
+      transition: transform .25s ease;
+      pointer-events: none;
+    }
+    button.link:hover .spark { transform: translateY(-2px); }
+    @keyframes pulse-in {
+      from { transform: translateY(6px); opacity: 0; }
+      to   { transform: none; opacity: 1; }
+    }
+    .grid > * { animation: pulse-in .45s ease both; }
+    .grid > *:nth-child(2){ animation-delay:.03s }
+    .grid > *:nth-child(3){ animation-delay:.06s }
+    .grid > *:nth-child(4){ animation-delay:.09s }
+    .grid > *:nth-child(5){ animation-delay:.12s }
+    .grid > *:nth-child(6){ animation-delay:.15s }
+    @media (prefers-reduced-motion: reduce){
+      html, body { animation: none !important; }
+      .grid > * { animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <section class="card" aria-label="Liens">
+      <div id="buttons" class="grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    // --- Palettes (aléatoire à chaque chargement) ---
+    const PALETTES = [
+      { bg: "radial-gradient(1200px 800px at 10% 15%, #31ffd1 0%, #1a9fff 35%, #7b2cff 65%, #ff2770 100%)", txt:"#f7fbff", spark:"#ffffff", glass:"rgba(255,255,255,0.10)", stroke:"rgba(255,255,255,0.28)" },
+      { bg: "radial-gradient(1100px 900px at 85% 20%, #00ffd0 0%, #00a2ff 38%, #3d5afe 60%, #8e2de2 85%)", txt:"#f6f9ff", spark:"#e2f3ff", glass:"rgba(255,255,255,0.12)", stroke:"rgba(255,255,255,0.30)" },
+      { bg: "conic-gradient(from 210deg at 70% 30%, #ffe53b 0%, #ff2525 27%, #ff00d4 55%, #00dbde 80%, #fcff00 100%)", txt:"#ffffff", spark:"#ffffff", glass:"rgba(255,255,255,0.14)", stroke:"rgba(255,255,255,0.32)" },
+      { bg: "radial-gradient(900px 700px at 20% 80%, #00c6ff 0%, #0072ff 45%, #1f005c 100%)", txt:"#f2f6ff", spark:"#dff3ff", glass:"rgba(255,255,255,0.10)", stroke:"rgba(255,255,255,0.26)" },
+      { bg: "radial-gradient(1000px 1000px at 40% 50%, #ff9a9e 0%, #f6416c 45%, #f76b1c 70%, #1f1c18 100%)", txt:"#fff7f7", spark:"#ffffff", glass:"rgba(255,255,255,0.10)", stroke:"rgba(255,255,255,0.28)" }
+    ];
+
+    // --- Liste des liens (modifie ici) ---
+    const LINKS = [
+      { label: "Dra", url: "https://tokugawamitambatra-cmd.github.io/madartwork/" },
+      { label: "Vid", url: "https://tenshotenki.github.io/25Y9AC25/" },
+      { label: "Wik", url: "https://en.wikipedia.org/wiki/Draft:2025_Madagascar_protests" }
+    ];
+
+    // --- Applique la palette ---
+    (function applyRandomPalette(){
+      const p = PALETTES[(Math.random() * PALETTES.length) | 0];
+      const root = document.documentElement;
+      root.style.setProperty('--bg', p.bg);
+      root.style.setProperty('--txt', p.txt);
+      root.style.setProperty('--spark', p.spark);
+      root.style.setProperty('--glass', p.glass);
+      root.style.setProperty('--stroke', p.stroke);
+    })();
+
+    // --- Boutons ---
+    (function renderButtons(){
+      const container = document.getElementById('buttons');
+      LINKS.forEach(item => {
+        const btn = document.createElement('button');
+        btn.className = 'link';
+        btn.type = 'button';
+        btn.setAttribute('aria-label', item.label);
+        btn.innerHTML = `
+          <span>${escapeHTML(item.label)}</span>
+          <i class="spark" aria-hidden="true"></i>
+        `;
+        btn.addEventListener('click', () => {
+          window.open(item.url, '_blank', 'noopener,noreferrer');
+        });
+        container.appendChild(btn);
+      });
+    })();
+
+    function escapeHTML(str){
+      return String(str)
+        .replaceAll('&', '&amp;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;')
+        .replaceAll('"', '&quot;')
+        .replaceAll("'", '&#039;');
+    }
+  </script>
+</body>
+</html>
